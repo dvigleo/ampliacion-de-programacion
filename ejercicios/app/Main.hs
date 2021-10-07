@@ -1,24 +1,11 @@
+{-# LANGUAGE RankNTypes #-}
 module Main where
 
-import Lib
+import Test.QuickCheck
 
-a::String
-a = "Cadena"
-
-b::Int
-b = length a + 7
-
-c::Integer
-c = 3
-
-d::Num a => a
-d = 3
-
-e::Num a => (Integer, a)
-e = (c, d)
-
-f::[Integer]
-f = [c,d]
+{--
+    h) Redefinición de las funciones originales para que sean polimórficas
+--}
 
 repetir :: Integer -> [Integer]
 repetir x = x: repetir x
@@ -31,6 +18,28 @@ coger _ [] = []
 coger n (x:xs) = x : coger (n-1) xs
 
 h2 = coger 1 [3, 4, 5]
+
+{--
+    i.a) Definción de las funciones coger y repetir a partir de 
+    las nativas take y repeat
+--}
+
+repetiri :: Integer -> [Integer]
+repetiri =  repeat
+
+repetiri1 = repetiri 2
+
+cogeri :: Int -> [Int] -> [Int]
+cogeri n _ | n <= 0 = []
+cogeri _ [] = []
+cogeri n (x:xs) = x : take (n-1) xs
+
+cogeri1 = cogeri 1 [9, 8, 7]
+
+{--
+    i.b) Ejemplos de fromInteger, toInteger, maxBound, Integral, 
+    Bounded sobre las funciones de coger y repetir
+--}
 
 i1::Integer
 i1 = 4
@@ -59,14 +68,33 @@ coger3 n (x:xs) = fromInteger x : coger (n-1) xs
 
 l = coger3 1 [3, 4, 5]
 
+{--
+    n) Utilizando la librería Test.QuickCheck,quickCheck para realizar 100 pruebas
+--}
+                                              
+cogercomp :: Int -> [a] -> [a]
+cogercomp n _ | n <= 0 = []
+cogercomp _ [] = []
+cogercomp n (x:xs) = x : cogercomp (n-1) xs
+
+comprobarCoger:: Num a => (Int, [a]) -> Bool
+comprobarCoger (x1, x2) = take x1 x2 == cogercomp x1 x2
+                            && cogercomp x1 x2 == take x1 x2
+
+comprobacion = quickCheck comprobarCoger
+    where valores = [(x, y) | x<-[1..2], y<-['A'..'Z']]
+
 main :: IO ()
-main = do
-    print a
-    print b
-    print c
-    print d
-    print e
-    print f
-    print h2
-    print i2
-    print i4
+main = 
+    print comprobacion
+--    print a
+--    print b
+--    print c
+--    print d
+--    print e
+--    print f
+--    print repetiri1
+--    print cogeri1
+--    print h2
+--    print i2
+--    print i4
