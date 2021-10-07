@@ -11,6 +11,32 @@ type Fraccion = (Integer, Integer)
 f1 :: Fraccion
 f1 = (2, 3)
 
+-- 1) simplificar al máximo una fracción
+simp1 (num, den) = ((signum den * num) `div` m, abs den `div` m)
+    where m = gcd' num den
+-- 2) comparar 2 fracciones
+-- 3) sumar varias fracciones
+suma3 (a, b) (c, d) = simp1 (a * d + b * c, b * d)
+-- 4) multiplicar 2 fracciones
+mult4 (a, b) (c, d) = simp1 (a * c, b * d)
+-- 5) restar 2 fracciones
+resta5 (a, b) (c, d) = simp1 (a * d - b * c, b * d)
+-- 6) restar y multiplicar varias fracciones (poniendo paréntesis 
+    -- desde izquierda y desde derecha)
+-- 7) convertir a cadena una fracción
+cadena7 (a, b)
+    | b' == 1 = show a'
+    | otherwise = show a' ++ "/" ++ show b'
+    where (a', b') = simp1 (a, b)
+-- 8) convertir a cadena una lista de fracciones
+-- 9) buscar entre varias fracciones las que son positivas, negativas y nulas
+-- 10) quitar de entre varias fracciones las equivalentes a una inicial
+-- 11) ordenar en modo creciente una lista de fracciones
+-- 12) obtener todas las sumas posibles a partir de 2 listas de fracciones 
+    -- considerando una fracción de la primera lista y otra fracción de la 
+    -- segunda, obtener todas las fracciones equivalentes a partir de una inicial
+-- 13) simplificar al máximo los elementos de una lista de fracciones y eliminar las equivalentes.
+
 {-
     b) Implementar el problema de referencia usando data para definir
     el tipo Fraccion', permitiendo definir una fracción con 3
@@ -40,17 +66,11 @@ comp2' frac1 frac2
 
 -- 3) sumar varias fracciones
 -- 4) multiplicar 2 fracciones
-mult4' frac1 frac2 = frac1 * frac2
-
 -- 5) restar 2 fracciones
-resta5' frac1 frac2 = (-) frac1 frac2
-
 -- 6) restar y multiplicar varias fracciones (poniendo paréntesis 
     -- desde izquierda y desde derecha)
 -- 7) convertir a cadena una fracción
-cadena7' frac = show frac
 -- 8) convertir a cadena una lista de fracciones
-cadena80 listafracs = show listafracs
 -- 9) buscar entre varias fracciones las que son positivas, negativas y nulas
 -- 10) quitar de entre varias fracciones las equivalentes a una inicial
 -- 11) ordenar en modo creciente una lista de fracciones
@@ -61,6 +81,16 @@ cadena80 listafracs = show listafracs
 
 main :: IO ()
 main = do 
+    putStrLn "\n\n ------------- Apartado a) ------------- \n"
+    putStrLn "Suma. de fracciones:"
+    print $ mult4 (1, 2) (2, 3)
+    putStrLn "\nMult. de 2 fracciones:"
+    print $ mult4 (1, 2) (2, 3)
+    putStrLn "\nResta de 2 fracciones:"
+    print $ resta5 (1, 2) (3, 4)
+    putStrLn "\nConvertir a cadena una fracción:"
+    print $ cadena7 (1, 2)
+
     putStrLn "\n\n ------------- Apartado b) ------------- \n"
     putStrLn "Simplificador de fracciones:"
     print $ simp1' 2 4
@@ -68,11 +98,3 @@ main = do
     print $ comp2' 1 1
     print $ comp2' 2 1
     print $ comp2' 1 2
-    putStrLn "\nMult. de 2 fracciones:"
-    print $ mult4' 1 1
-    putStrLn "\nResta de 2 fracciones:"
-    print $ resta5' 1 1
-    putStrLn "\nConvertir a cadena una fracción:"
-    print $ cadena7' (1, 2)
-    putStrLn "\nConvertir a cadena una lista de fracciones:"
-    print $ cadena7' [(1, 2), (2, 3), (3, 4)]
