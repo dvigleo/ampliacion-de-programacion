@@ -1,7 +1,6 @@
 module Lib
-    ( gcd'
+    ( someFunc
     ) where
 
-gcd' a b
-    | b /= 0 = gcd' b (a `mod` b)
-    | otherwise = a
+someFunc :: String
+someFunc = "Hello"
