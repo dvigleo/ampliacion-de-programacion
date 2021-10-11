@@ -85,7 +85,12 @@ cadena8' [] = ""
 cadena8' [x] = cadena7' x
 cadena8' (x:xs) = cadena7' x ++ ", " ++ cadena8' xs
 
--- 9) buscar entre varias fracciones las que son positivas, negativas y nulas
+{-
+    9) buscar entre varias fracciones las que son positivas, negativas y nulas
+        - buscar9' = Función de entrada. Recibe un argumento (arg) que puede ser pos | neg | null para indicar qué clase de filtrado se hará sobre la lista
+        - esPositiva' = Función que regresa un booleano que indica si una fracción dada es positiva o no. Revisa el símbolo del numerador o el denomindos según se requiera
+        - esNula' = Función que regresa un booleano que indica si una fracción dada es nula o no (si el numerador == 0)
+-}
 esPositiva' :: Fraccion' -> Bool
 esPositiva' (F1 a b) = not (signum a == (-1) || signum b == (-1))
 esPositiva' (F2 a) = signum a /= (-1)
@@ -101,6 +106,7 @@ buscar9' arg (x:xs)
     | arg == "pos" = if esPositiva' x then x : buscar9' arg xs else buscar9' arg xs
     | arg == "neg" = if not (esPositiva' x) then x : buscar9' arg xs else buscar9' arg xs
     | arg == "null" = if esNula' x then x : buscar9' arg xs else buscar9' arg xs
+    | otherwise = error "Ese filtro no existe"
 
 -- 10) quitar de entre varias fracciones las equivalentes a una inicial
 quitar10' :: Fraccion' -> [Fraccion'] -> [Fraccion']
@@ -109,28 +115,45 @@ quitar10' x (y:ys)
     | comp2' x y == "EQ" = quitar10' x ys
     | otherwise = y : quitar10' x ys
 
--- 11) ordenar en modo creciente una lista de fracciones
+{-
+    11) ordenar en modo creciente una lista de fracciones
+        - ordenar11' Función de entrada, se pasa la lista y un valor de 0 para saber cuántas veces se debe de iterar sobre la lista
+        - bubblesort = Función para iterar N cantidad de veces sobre la lista; donde N = tamaño de la lista
+        - bubblesortAux = Función de ordenamiento; compara el primer elemento con el segundo y los intercambia si el segundo es menor
+-} 
+bubblesortAux :: [Fraccion'] -> [Fraccion']
+bubblesortAux [] = []
+bubblesortAux [x] = [x]
+bubblesortAux (x:y:xs)
+    | comp2' x y == "GT" = y : bubblesortAux (x:xs)
+    | otherwise = x : bubblesortAux (y:xs)
+
+bubblesort :: [Fraccion'] -> Int -> [Fraccion']
+bubblesort xs i
+    | i == length xs = xs
+    | otherwise = bubblesort (bubblesortAux xs) (i + 1)
+
 ordenar11' :: [Fraccion'] -> [Fraccion']
-ordenar11' [] = []
-ordenar11' [x] = [x]
-ordenar11' (x:y:xs)
-    | comp2' x y == "GT" = y : ordenar11' (x:xs)
-    | otherwise = x : ordenar11' (y:xs)
+ordenar11' x = bubblesort x 0
 
--- 12) obtener todas las sumas posibles a partir de 2 listas de fracciones
-    -- considerando una fracción de la primera lista y otra fracción de la
-    -- segunda
+{-
+    12) obtener todas las sumas posibles a partir de 2 listas de fracciones
+        considerando una fracción de la primera lista y otra fracción de la
+        segunda
+        - sumaListas12' = Función de entrada. Recibe ambas listas obtiene las sumas y regresa una lista con todas las sumas posibles
+        - sumarNconLista = Función que se utiliza para sumar un número con todos los elementos de una lista
+-}
 
-aux :: Fraccion' -> [Fraccion'] -> [Fraccion']
-aux _ [] = []
-aux n [x] = [sumaAux' n x]
-aux n (x:xs) = sumaAux' n x : aux n xs
+sumarNconLista :: Fraccion' -> [Fraccion'] -> [Fraccion']
+sumarNconLista _ [] = []
+sumarNconLista n [x] = [sumaAux' n x]
+sumarNconLista n (x:xs) = sumaAux' n x : sumarNconLista n xs
 
---sumaListas12' :: [Fraccion'] -> [Fraccion'] -> [Fraccion']
+sumaListas12' :: [Fraccion'] -> [Fraccion'] -> [Fraccion']
 sumaListas12' [] [] = []
 sumaListas12' [x] [y] = [sumaAux' x y]
-sumaListas12' [x] (y:ys) = aux x (y:ys)
-sumaListas12' (x:xs) (y:ys) =  sumaListas12' (x:xs) (y:ys)
+sumaListas12' [x] (y:ys) = sumarNconLista x (y:ys)
+sumaListas12' (x:xs) (y:ys) =  sumarNconLista x (y:ys) ++ sumaListas12' xs (y:ys)
 
 -- 13) obtener todas las fracciones equivalentes a partir de una inicial
 equivalentes13' :: Fraccion' -> [Fraccion'] -> [Fraccion']
@@ -139,19 +162,26 @@ equivalentes13' x (y:xs)
     | comp2' x y == "EQ" = y : equivalentes13' x xs
     | otherwise = equivalentes13' x xs
 
--- 14) simplificar al máximo los elementos de una lista de fracciones
--- y eliminar las equivalentes.
+{-
+    14) simplificar al máximo los elementos de una lista de fracciones y eliminar las equivalentes.
+        - simplificar14' = Función de entrada. Se simplifica, ordena y eliminan duplicados
+        - simplificarAux = Función que recibe una lista y regresa una lista con todos sus elementos simplificados
+        - quitarDups = Función que compara el primer elemento con el segundo y elimina el segundo si son iguales
+-}
 
 quitarDups :: [Fraccion'] -> [Fraccion']
 quitarDups [] = []
 quitarDups [x] = [x]
 quitarDups (x:y:xs)
     | comp2' x y == "EQ" = quitarDups (x:xs)
-    | otherwise = y : quitarDups (y:xs)
+    | otherwise = x : quitarDups (y:xs)
+
+simplificarAux' :: [Fraccion'] -> [Fraccion']
+simplificarAux' [] = []
+simplificarAux' (x:xs) = simp1' x : simplificar14' xs
 
 simplificar14' :: [Fraccion'] -> [Fraccion']
-simplificar14' [] = []
-simplificar14' (x:xs) = simp1' x : simplificar14' xs
+simplificar14' x = quitarDups (ordenar11' (simplificarAux' x))
 
 frac1', frac2', frac3', frac4' :: Fraccion'
 frac1' = F1 1 5
@@ -161,6 +191,8 @@ frac4' = F1 4 20
 
 lista' :: [Fraccion']
 lista' = [frac1', frac2', frac3', frac4']
+--lista' = [F1 1 1, F1 2 1, F1 3 1]
+lista2' = [F1 4 1, F1 5 1]
 
 frac1'', frac2'', frac3'' :: Fraccion'
 frac1'' = F2 2
@@ -178,40 +210,48 @@ main = do
     putStrLn "\n\n ------------- Apartado b) ------------- \n"
     -- putStrLn "Simplificador de fracciones:"
     -- print $ simp1' frac2'
+
     -- putStrLn "\nComparación de fracciones:"
     -- print $ comp2' frac1' frac2'
+
     -- putStrLn "\nSuma de una lista de fracciones:"
     -- print $ suma3' lista'
+
     -- putStrLn "\nMult. de 2 fracciones:"
     -- print $ mult4' frac1' frac1''
+
     -- putStrLn "\nResta de 2 fracciones:"
     -- print $ resta5' frac1'' frac2''
+
+    putStrLn "\nRestar y multiplicar varias fracciones, poniendo paréntesis desde\nla izquierda y derecha:"
+
     -- putStrLn "\nConvertir a cadena una fracción:"
     -- print $ cadena7' frac1'
+
     -- putStrLn "\nConvertir a cadena una lista fracciones:"
     -- print $ cadena8' lista'
+
     -- putStrLn "\nBuscar entre varias fracciones las que son positivas, negativas y nulas:"
     -- print $ buscar9' "pos" lista'
     -- print $ buscar9' "neg" lista'
     -- print $ buscar9' "null" lista'
+
     -- putStrLn "\nQuitar una fracción de una lista:"
     -- print $ quitar10' frac1' lista'
-    -- putStrLn "\nOrdenar una lista de manera ascendente:"
-    -- print lista''
-    -- print $ ordenar11' lista''
-    -- putStrLn "\nObtener todas las fracciones equivalentes a partir de una inicial:"
-    putStrLn "\nObtener todas las sumas posibles de 2 listas"
-    print $ aux (F1 1 1) [F1 2 1, F1 2 1]
-    print $ sumaListas12' [F1 1 1, F1 2 1] [F1 2 1, F1 2 1]
-    -- print $ equivalentes13' frac1' lista'
-    -- putStrLn "\nsimplificar al máximo los elementos de una lista de fracciones\ny eliminar las equivalentes: "
-    -- print lista'
-    -- print $ simplificar14' lista'
 
--- [F1a 1 1, F1b 1 1]
--- [F1c 2 1, F1d 2 1]
--- 
--- F1a + F1c = 3
--- F1a + F1d = 3
--- F1b + F1c = 3
--- F1b + F1d = 3
+    -- putStrLn "\nOrdenar una lista de manera ascendente:"
+    -- print lista'
+    -- print $ ordenar11' lista'
+
+    -- putStrLn "\nObtener todas las sumas posibles de 2 listas"
+    -- print lista'
+    -- print lista2'
+    -- print $ sumaListas12' lista' lista2'
+
+    -- putStrLn "\nObtener todas las fracciones equivalentes a partir de una inicial:"
+    -- print $ "Fraccion inicial: " ++ cadena7' frac1'
+    -- print $ equivalentes13' frac1' lista'
+    
+    putStrLn "\nsimplificar al máximo los elementos de una lista de fracciones\ny eliminar las equivalentes: "
+    print lista'
+    print $ quitarDups (ordenar11' (simplificar14' lista'))
