@@ -42,7 +42,11 @@ comp2' (F2 a) (F2 b)
     | otherwise = "EQ"
     where y = a - b
 
--- 3) sumar varias fracciones
+{-
+    3) sumar varias fracciones
+        - suma3' = Función principal. Recorre todos los elementos de la lista. Llama una función auxiliar para ir haciendo las sumas correspondientes
+        - sumaAux' = Función que recibe dos fracciones y las suma de acuerdo a la fórmula matemática. 
+-} 
 sumaAux' :: Fraccion' -> Fraccion' -> Fraccion'
 sumaAux' (F1 a b) (F1 c d) = simp1' (F1 (a * (y `div` b) + c * (y `div` d)) y)
     where y = (b * d) `div` gcd b d
@@ -70,8 +74,19 @@ resta5' (F1 a b) (F1 c d) = F1 (a * d - b * c) (b * d)
 resta5' (F1 a b) (F2 c)   = F1 (a - (b * c)) b
 resta5' (F2 a) (F1 c d)   = F1 ((a * d) - c) d
 resta5' (F2 a) (F2 c)     = F2 (a - c)
+
 -- 6) restar y multiplicar varias fracciones (poniendo paréntesis
     -- desde izquierda y desde derecha)
+restarIzquierda6' :: [Fraccion'] -> [Fraccion']
+restarIzquierda6' [] = []
+restarIzquierda6' [x] = [x]
+restarIzquierda6' (x:y:xs) = restarIzquierda6' ((resta5' x y) : xs)
+
+multIzquierda6' :: [Fraccion'] -> [Fraccion']
+multIzquierda6' [] = []
+multIzquierda6' [x] = [x]
+multIzquierda6' (x:y:xs) = multIzquierda6' ((mult4' x y) : xs)
+
 -- 7) convertir a cadena una fracción
 cadena7' :: Fraccion' -> String
 cadena7' (F1 a b)
@@ -189,9 +204,9 @@ frac2' = F1 9 7
 frac3' = F1 540 420
 frac4' = F1 4 20
 
-lista' :: [Fraccion']
-lista' = [frac1', frac2', frac3', frac4']
---lista' = [F1 1 1, F1 2 1, F1 3 1]
+lista', lista2' :: [Fraccion']
+-- lista' = [frac1', frac2', frac3', frac4']
+lista' = [F1 8 1, F1 2 1, F1 1 1, F2 2]
 lista2' = [F1 4 1, F1 5 1]
 
 frac1'', frac2'', frac3'' :: Fraccion'
@@ -224,6 +239,8 @@ main = do
     -- print $ resta5' frac1'' frac2''
 
     putStrLn "\nRestar y multiplicar varias fracciones, poniendo paréntesis desde\nla izquierda y derecha:"
+    print $ restarIzquierda6' lista'
+    print $ multIzquierda6' lista'
 
     -- putStrLn "\nConvertir a cadena una fracción:"
     -- print $ cadena7' frac1'
@@ -252,6 +269,6 @@ main = do
     -- print $ "Fraccion inicial: " ++ cadena7' frac1'
     -- print $ equivalentes13' frac1' lista'
     
-    putStrLn "\nsimplificar al máximo los elementos de una lista de fracciones\ny eliminar las equivalentes: "
-    print lista'
-    print $ quitarDups (ordenar11' (simplificar14' lista'))
+    -- putStrLn "\nSimplificar al máximo los elementos de una lista de fracciones\ny eliminar las equivalentes: "
+    -- print lista'
+    -- print $ quitarDups (ordenar11' (simplificar14' lista'))
