@@ -18,6 +18,7 @@ data Fraccion' =
 simp1' :: Fraccion' -> Fraccion'
 simp1' (F1 a b) = F1 ((signum b * a) `div` m) (abs b `div` m)
     where m = gcd a b
+simp1' (F2 a) = F2 a
 
 -- 2) comparar 2 fracciones
 comp2' :: Fraccion' -> Fraccion' -> String
@@ -75,8 +76,20 @@ resta5' (F1 a b) (F2 c)   = F1 (a - (b * c)) b
 resta5' (F2 a) (F1 c d)   = F1 ((a * d) - c) d
 resta5' (F2 a) (F2 c)     = F2 (a - c)
 
--- 6) restar y multiplicar varias fracciones (poniendo paréntesis
-    -- desde izquierda y desde derecha)
+{-
+    6) restar y multiplicar varias fracciones (poniendo paréntesis desde izquierda y desde derecha)
+        - restarIzquierda6' = Función recursiva que va tomando dos elementos de la lista y los resta, el nuevo resultado se resta con el siguiente etc.
+        - multIzquierda6' = Función recursiva que toma pares de la lista y los va multiplicando entre sí.
+        - restarDerecha6' = Función de entrada que manda a llamar a la función auxiliar mandando como argumentos:
+            * La función --resta5'-- 
+            * El acumulador inicial F1 0 1 para no modificar el resultado final
+            * La lista de elementos a restar
+        - multDerecha6' = Función de entrada que manda a llamar a la función auxiliar mandando como argumentos:
+            * La función --mult4'-- 
+            * El acumulador inicial F1 1 1 para no modificar el resultado final
+            * La lista de elementos a multiplicar
+        - parenAux = Función que realiza las operaciones necesarias poniendo paréntesis desde la derecha. Su implementación es similar a foldr (nativa de Haskell)
+-}
 restarIzquierda6' :: [Fraccion'] -> [Fraccion']
 restarIzquierda6' [] = []
 restarIzquierda6' [x] = [x]
@@ -86,6 +99,16 @@ multIzquierda6' :: [Fraccion'] -> [Fraccion']
 multIzquierda6' [] = []
 multIzquierda6' [x] = [x]
 multIzquierda6' (x:y:xs) = multIzquierda6' ((mult4' x y) : xs)
+
+restarDerecha6' :: [Fraccion'] -> Fraccion'
+restarDerecha6' x = parenAux resta5' (F1 0 1) x
+
+multDerecha6' :: [Fraccion'] -> Fraccion'
+multDerecha6' x = parenAux mult4' (F1 1 1) x
+
+parenAux :: (t -> t -> t) -> t -> [t] -> t
+parenAux func acc [] = acc
+parenAux func acc (x:xs) = func x (parenAux func acc xs)
 
 -- 7) convertir a cadena una fracción
 cadena7' :: Fraccion' -> String
@@ -112,6 +135,9 @@ esPositiva' (F2 a) = signum a /= (-1)
 
 esNula' :: Fraccion' -> Bool
 esNula' (F1 a b)
+    | a == 0 = True
+    | otherwise = False
+esNula' (F2 a)
     | a == 0 = True
     | otherwise = False
 
@@ -206,7 +232,7 @@ frac4' = F1 4 20
 
 lista', lista2' :: [Fraccion']
 -- lista' = [frac1', frac2', frac3', frac4']
-lista' = [F1 8 1, F1 2 1, F1 1 1, F2 2]
+lista' = [F1 8 1, F1 2 1, F1 1 1, F2 (-2), F1 0 2]
 lista2' = [F1 4 1, F1 5 1]
 
 frac1'', frac2'', frac3'' :: Fraccion'
@@ -223,52 +249,55 @@ frac1''' = 3 :/ 2
 main :: IO ()
 main = do
     putStrLn "\n\n ------------- Apartado b) ------------- \n"
-    -- putStrLn "Simplificador de fracciones:"
-    -- print $ simp1' frac2'
+    putStrLn "Simplificador de fracciones:"
+    print $ simp1' frac2'
 
-    -- putStrLn "\nComparación de fracciones:"
-    -- print $ comp2' frac1' frac2'
+    putStrLn "\nComparación de fracciones:"
+    print $ comp2' frac1' frac2'
 
-    -- putStrLn "\nSuma de una lista de fracciones:"
-    -- print $ suma3' lista'
+    putStrLn "\nSuma de una lista de fracciones:"
+    print $ suma3' lista'
 
-    -- putStrLn "\nMult. de 2 fracciones:"
-    -- print $ mult4' frac1' frac1''
+    putStrLn "\nMult. de 2 fracciones:"
+    print $ mult4' frac1' frac1''
 
-    -- putStrLn "\nResta de 2 fracciones:"
-    -- print $ resta5' frac1'' frac2''
+    putStrLn "\nResta de 2 fracciones:"
+    print $ resta5' frac1'' frac2''
 
     putStrLn "\nRestar y multiplicar varias fracciones, poniendo paréntesis desde\nla izquierda y derecha:"
+    print lista'
     print $ restarIzquierda6' lista'
+    print $ restarDerecha6' lista'
     print $ multIzquierda6' lista'
+    print $ multDerecha6' lista'
 
-    -- putStrLn "\nConvertir a cadena una fracción:"
-    -- print $ cadena7' frac1'
+    putStrLn "\nConvertir a cadena una fracción:"
+    print $ cadena7' frac1'
 
-    -- putStrLn "\nConvertir a cadena una lista fracciones:"
-    -- print $ cadena8' lista'
+    putStrLn "\nConvertir a cadena una lista fracciones:"
+    print $ cadena8' lista'
 
-    -- putStrLn "\nBuscar entre varias fracciones las que son positivas, negativas y nulas:"
-    -- print $ buscar9' "pos" lista'
-    -- print $ buscar9' "neg" lista'
-    -- print $ buscar9' "null" lista'
+    putStrLn "\nBuscar entre varias fracciones las que son positivas, negativas y nulas:"
+    print $ buscar9' "pos" lista'
+    print $ buscar9' "neg" lista'
+    print $ buscar9' "null" lista'
 
-    -- putStrLn "\nQuitar una fracción de una lista:"
-    -- print $ quitar10' frac1' lista'
+    putStrLn "\nQuitar una fracción de una lista:"
+    print $ quitar10' frac1' lista'
 
-    -- putStrLn "\nOrdenar una lista de manera ascendente:"
-    -- print lista'
-    -- print $ ordenar11' lista'
+    putStrLn "\nOrdenar una lista de manera ascendente:"
+    print lista'
+    print $ ordenar11' lista'
 
-    -- putStrLn "\nObtener todas las sumas posibles de 2 listas"
-    -- print lista'
-    -- print lista2'
-    -- print $ sumaListas12' lista' lista2'
+    putStrLn "\nObtener todas las sumas posibles de 2 listas"
+    print lista'
+    print lista2'
+    print $ sumaListas12' lista' lista2'
 
-    -- putStrLn "\nObtener todas las fracciones equivalentes a partir de una inicial:"
-    -- print $ "Fraccion inicial: " ++ cadena7' frac1'
-    -- print $ equivalentes13' frac1' lista'
+    putStrLn "\nObtener todas las fracciones equivalentes a partir de una inicial:"
+    print $ "Fraccion inicial: " ++ cadena7' frac1'
+    print $ equivalentes13' frac1' lista'
     
-    -- putStrLn "\nSimplificar al máximo los elementos de una lista de fracciones\ny eliminar las equivalentes: "
-    -- print lista'
-    -- print $ quitarDups (ordenar11' (simplificar14' lista'))
+    putStrLn "\nSimplificar al máximo los elementos de una lista de fracciones\ny eliminar las equivalentes: "
+    print lista'
+    print $ quitarDups (ordenar11' (simplificar14' lista'))
