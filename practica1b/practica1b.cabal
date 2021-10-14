@@ -26,6 +26,8 @@ source-repository head
 library
   exposed-modules:
       Lib
+      MainApartadoB
+      MainApartadoC
   other-modules:
       Paths_practica1b
   hs-source-dirs:
