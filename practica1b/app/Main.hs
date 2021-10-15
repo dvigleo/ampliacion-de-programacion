@@ -2,7 +2,7 @@ module Main where
 
 import           MainApartadoB
 import           MainApartadoC
--- import           MainApartadoE
+import           MainApartadoE
 
 main :: IO ()
 main = do
@@ -12,5 +12,5 @@ main = do
     putStrLn "\n\n ------------- Apartado c) ------------- \n"
     mainApartadoC
 
-    -- putStrLn "\n\n ------------- Apartado e) ------------- \n"
-    -- mainApartadoE
+    putStrLn "\n\n ------------- Apartado e) ------------- \n"
+    mainApartadoE
