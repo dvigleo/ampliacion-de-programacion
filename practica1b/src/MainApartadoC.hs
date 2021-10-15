@@ -200,19 +200,16 @@ frac2' = F1 9 7
 frac3' = F1 540 420
 frac4' = F1 4 20
 
-lista', lista2' :: [Fraccion']
-lista' = [frac1', frac2', frac3', frac4'] -- 13 y 14
-lista2' = [F1 8 1, F1 2 1, F1 1 1, F2 (-2), F1 0 2] -- 9
+lista', lista2', lista3', lista4', lista5':: [Fraccion']
+lista' = [frac1', frac2', frac3', frac4']
+lista2' = [F1 8 1, F1 2 1, F1 1 1, F2 (-2), F1 0 2]
 lista3' = [F1 4 1, F2 5]
 lista4' = [F1 1 2, F2 8]
+lista5' = [F1 (-8) 2, F1 1 5, F2 3, F2 1, F1 (-3) 4]
 
-frac1'', frac2'', frac3'' :: Fraccion'
+frac1'', frac2'' :: Fraccion'
 frac1'' = F2 2
 frac2'' = F2 4
-frac3'' = F2 6
-
-lista'' :: [Fraccion']
-lista'' = [frac2'', frac1'', frac3'']
 
 frac1''' :: Fraccion'
 frac1''' = 3 :/ 2
@@ -220,8 +217,7 @@ frac1''' = 3 :/ 2
 mainApartadoC :: IO ()
 mainApartadoC = do
     putStrLn "Simplificador de fracciones:"
-    print $ "Original: " ++ cadena7 frac3'
-    print $ cadena7 (simp1 frac3')
+    print $ cadena7 frac3' ++ " -> " ++ cadena7 (simp1 frac3')
 
     putStrLn "\nComparación de fracciones:\n   | LT = Less Than\n   | GT = Greater Than\n   | EQ = Equal To\n"
     print $ cadena7 frac1' ++ " es " ++ comp2 frac1' frac2' ++ " " ++ cadena7 frac2'
@@ -237,16 +233,12 @@ mainApartadoC = do
     putStrLn "\nResta de 2 fracciones:"
     print $ cadena7 frac1'' ++ " - " ++ cadena7 frac2'' ++ " = " ++ cadena7 (resta5 frac1'' frac2'')
 
-    putStrLn "\nRestar y multiplicar varias fracciones, poniendo paréntesis desde\nla izquierda y derecha:"
+    putStrLn "\nRestar y multiplicar varias fracciones, poniendo paréntesis desde la izquierda y derecha:"
     print $ "[ " ++ cadena8 lista2' ++ " ]"
-    putStrLn "\nRestando por la izquierda:"
-    print $ restarIzquierda6 lista2'
-    putStrLn "Restando por la derecha:"
-    print $ restarDerecha6 lista2'
-    putStrLn "Multiplicando por la izquierda:"
-    print $ multIzquierda6 lista2'
-    putStrLn "Multiplicando por la derecha:"
-    print $ multDerecha6 lista2'
+    print $ "Restando por la izquierda = " ++ cadena7 (restarIzquierda6 lista5')
+    print $ "Restando por la derecha = " ++ cadena7 (restarDerecha6 lista5')
+    print $ "Multiplicando por la izquierda = " ++ cadena7 (multIzquierda6 lista5')
+    print $ "Multiplicando por la derecha = " ++ cadena7 (multDerecha6 lista5')
 
     putStrLn "\nConvertir a cadena una fracción:"
     print $ cadena7 frac1'
@@ -265,10 +257,10 @@ mainApartadoC = do
     print $ cadena8 (quitar10 frac1' lista')
 
     putStrLn "\nOrdenar una lista de manera ascendente:"
-    print $ "[ " ++ cadena8 lista' ++ " ] --> [ " ++ cadena8 (ordenar11 lista') ++ " ]"
+    print $ "[ " ++ cadena8 lista' ++ " ] -> [ " ++ cadena8 (ordenar11 lista') ++ " ]"
 
     putStrLn "\nObtener todas las sumas posibles de 2 listas"
-    print $ "[ " ++ cadena8 lista3' ++ " ] X [ " ++ cadena8 lista4' ++ " ]"
+    print $ "[ " ++ cadena8 lista3' ++ " ] + [ " ++ cadena8 lista4' ++ " ]"
     print $ "[ " ++ cadena8 (sumaListas12 lista3' lista4') ++ " ]"
 
     putStrLn "\nObtener todas las fracciones equivalentes a partir de una inicial:"
@@ -276,4 +268,4 @@ mainApartadoC = do
     print $ "[ " ++ cadena8 (equivalentes13 frac1' lista') ++ " ]"
 
     putStrLn "\nSimplificar al máximo los elementos de una lista de fracciones y eliminar las equivalentes: "
-    print $ "[ " ++ cadena8 lista' ++ " ] --> [ " ++ cadena8(simplificar14 lista') ++ " ]"
+    print $ "[ " ++ cadena8 lista' ++ " ] -> [ " ++ cadena8(simplificar14 lista') ++ " ]"
