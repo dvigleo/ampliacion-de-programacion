@@ -21,6 +21,10 @@ simp1 :: Fraccion' -> Fraccion'
 simp1 (F1 a b) = F1 ((signum b * a) `div` m) (abs b `div` m)
     where m = gcd a b
 simp1 (F2 a) = F2 a
+simp1 (a :/ b)
+    | b == 1 = F2 ((signum b * a) `div` m)
+    | otherwise = ((signum b * a) `div` m) :/ (abs b `div` m)
+    where m = gcd a b
 
 -- 2) comparar 2 fracciones
 comp2 :: Fraccion' -> Fraccion' -> String
@@ -29,6 +33,7 @@ comp2 (F1 a b) (F1 c d)
     | y < 0 = "LT"
     | otherwise = "EQ"
     where y = (a * d) - (b * c)
+
 comp2 (F1 a b) (F2 c)
     | y > 0 = "GT"
     | y < 0 = "LT"
@@ -45,6 +50,32 @@ comp2 (F2 a) (F2 b)
     | otherwise = "EQ"
     where y = a - b
 
+comp2 (a :/ b) (c :/ d)
+    | y > 0 = "GT"
+    | y < 0 = "LT"
+    | otherwise = "EQ"
+    where y = (a * d) - (b * c)
+comp2 (a :/ b) (F2 c)
+    | y > 0 = "GT"
+    | y < 0 = "LT"
+    | otherwise = "EQ"
+    where y = a - (b * c)
+comp2 (F2 a) (c :/ d)
+    | y > 0 = "GT"
+    | y < 0 = "LT"
+    | otherwise = "EQ"
+    where y = (a * d) - c
+comp2 (a :/ b) (F1 c d)
+    | y > 0 = "GT"
+    | y < 0 = "LT"
+    | otherwise = "EQ"
+    where y = (a * d) - (b * c)
+comp2 (F1 a b) (c :/ d)
+    | y > 0 = "GT"
+    | y < 0 = "LT"
+    | otherwise = "EQ"
+    where y = (a * d) - (b * c)
+
 {-
     3) sumar varias fracciones
         - suma3 = Función principal. Recorre todos los elementos de la lista. Llama una función auxiliar para ir haciendo las sumas correspondientes
@@ -59,6 +90,17 @@ sumaAux (F2 a) (F1 c d) = simp1 (F1 (a * y + c * (y `div` d)) y)
     where y = d `div` gcd 1 d
 sumaAux (F2 a) (F2 b) = F2 (a + b)
 
+sumaAux (a :/ b) (c :/ d) = simp1 ((a * (y `div` b) + c * (y `div` d)) :/ y)
+    where y = (b * d) `div` gcd b d
+sumaAux (a :/ b) (F1 c d) = simp1 ((a * (y `div` b) + c * (y `div` d)) :/ y)
+    where y = (b * d) `div` gcd b d
+sumaAux (F1 a b) (c :/ d) = simp1 ((a * (y `div` b) + c * (y `div` d)) :/ y)
+    where y = (b * d) `div` gcd b d
+sumaAux (a :/ b) (F2 c) = simp1 ((a * (y `div` b) + c * y) :/ y)
+    where y = b `div` gcd b 1
+sumaAux (F2 a) (c :/ d) = simp1 ((a * y + c * (y `div` d)) :/ y)
+    where y = d `div` gcd 1 d
+
 suma3 :: [Fraccion'] -> [Fraccion']
 suma3 (x:y:xs) = if null xs
                     then [sumaAux x y]
@@ -66,17 +108,29 @@ suma3 (x:y:xs) = if null xs
 
 -- 4) multiplicar 2 fracciones
 mult4 :: Fraccion' -> Fraccion' -> Fraccion'
-mult4 (F1 a b) (F1 c d) = F1 (a * c) (b * d)
-mult4 (F1 a b) (F2 c)   = F1 (a * c) b
-mult4 (F2 a) (F1 c d)   = F1 (a * c) d
-mult4 (F2 a) (F2 b)     = F2 (a * b)
+mult4 (F1 a b) (F1 c d) = simp1 (F1 (a * c) (b * d))
+mult4 (F1 a b) (F2 c)   = simp1 (F1 (a * c) b)
+mult4 (F2 a) (F1 c d)   = simp1 (F1 (a * c) d)
+mult4 (F2 a) (F2 b)     = simp1 (F2 (a * b))
+
+mult4 (a :/ b) (c :/ d) = simp1 ((a * c) :/ (b * d))
+mult4 (a :/ b) (F1 c d) = simp1 ((a * c) :/ (b * d))
+mult4 (F1 a b) (c :/ d) = simp1 ((a * c) :/ (b * d))
+mult4 (a :/ b) (F2 c)   = simp1 ((a * c) :/ b)
+mult4 (F2 a) (c :/ d)   = simp1 ((a * c) :/ d)
 
 -- 5) restar 2 fracciones
 resta5 :: Fraccion' -> Fraccion' -> Fraccion'
-resta5 (F1 a b) (F1 c d) = F1 (a * d - b * c) (b * d)
-resta5 (F1 a b) (F2 c)   = F1 (a - (b * c)) b
-resta5 (F2 a) (F1 c d)   = F1 ((a * d) - c) d
-resta5 (F2 a) (F2 c)     = F2 (a - c)
+resta5 (F1 a b) (F1 c d) = simp1 (F1 (a * d - b * c) (b * d))
+resta5 (F1 a b) (F2 c)   = simp1 (F1 (a - (b * c)) b)
+resta5 (F2 a) (F1 c d)   = simp1 (F1 ((a * d) - c) d)
+resta5 (F2 a) (F2 c)     = simp1 (F2 (a - c))
+
+resta5 (a :/ b) (c :/ d) = simp1 ((a * d - b * c) :/ (b * d))
+resta5 (a :/ b) (F1 c d) = simp1 ((a * d - b * c) :/ (b * d))
+resta5 (F1 a b) (c :/ d) = simp1 ((a * d - b * c) :/ (b * d))
+resta5 (a :/ b) (F2 c)   = simp1 ((a - (b * c)) :/ b)
+resta5 (F2 a) (c :/ d)   = simp1 (((a * d) - c) :/ d)
 
 {-
     6) restar y multiplicar varias fracciones (poniendo paréntesis desde izquierda y desde derecha)
@@ -99,7 +153,7 @@ multIzquierda6 :: [Fraccion'] -> Fraccion'
 multIzquierda6 xs = izquierdaAux mult4 (F1 1 1) xs
 
 izquierdaAux :: (t1 -> t -> t1) -> t1 -> [t] -> t1
-izquierdaAux _ acc [] = acc
+izquierdaAux _ acc []        = acc
 izquierdaAux func acc (x:xs) = izquierdaAux func (func acc x) xs
 
 restarDerecha6 :: [Fraccion'] -> Fraccion'
@@ -109,7 +163,7 @@ multDerecha6 :: [Fraccion'] -> Fraccion'
 multDerecha6 xs = derechaAux mult4 (F1 1 1) xs
 
 derechaAux :: (t -> t -> t) -> t -> [t] -> t
-derechaAux _ acc []     = acc
+derechaAux _ acc []        = acc
 derechaAux func acc (x:xs) = func x (derechaAux func acc xs)
 
 -- 7) convertir a cadena una fracción
@@ -118,6 +172,9 @@ cadena7 (F1 a b)
         | b == 1 = show a
         | otherwise = show a ++ "/" ++ show b
 cadena7 (F2 a) = show a
+cadena7 (a :/ b)
+        | b == 1 = show a
+        | otherwise = show a ++ "/" ++ show b
 
 -- 8) convertir a cadena una lista de fracciones
 cadena8 :: [Fraccion'] -> String
@@ -134,12 +191,16 @@ cadena8 (x:xs) = cadena7 x ++ ", " ++ cadena8 xs
 esPositiva :: Fraccion' -> Bool
 esPositiva (F1 a b) = not (signum a == (-1) || signum b == (-1))
 esPositiva (F2 a)   = signum a /= (-1)
+esPositiva (a :/ b) = not (signum a == (-1) || signum b == (-1))
 
 esNula :: Fraccion' -> Bool
-esNula (F1 a b)
+esNula (F1 a _)
     | a == 0 = True
     | otherwise = False
 esNula (F2 a)
+    | a == 0 = True
+    | otherwise = False
+esNula (a :/ _)
     | a == 0 = True
     | otherwise = False
 
@@ -226,25 +287,28 @@ simplificarAux (x:xs) = simp1 x : simplificar14 xs
 simplificar14 :: [Fraccion'] -> [Fraccion']
 simplificar14 x = quitarDups (ordenar11 (simplificarAux x))
 
+{---------------------------------------------------------------------
+---------------------------------------------------------------------}
+
 frac1', frac2', frac3', frac4' :: Fraccion'
 frac1' = F1 1 5
-frac2' = F1 9 7
+frac2' = 9 :/ 7
 frac3' = F1 540 420
 frac4' = F1 4 20
 
 lista', lista2', lista3', lista4', lista5' :: [Fraccion']
 lista' = [frac1', frac2', frac3', frac4']
-lista2' = [F1 8 1, F1 2 1, F1 1 1, F2 (-2), F1 0 2]
+lista2' = [F1 8 1, 2 :/ 1, F1 1 1, F2 (-2), F1 0 2]
 lista3' = [F1 4 1, F2 5]
-lista4' = [F1 1 2, F2 8]
-lista5' = [F1 (-8) 2, F1 1 5, F2 3, F2 1, F1 (-3) 4]
+lista4' = [1 :/ 2, F2 8]
+lista5' = [F1 (-8) 2, F1 1 5, F2 3, F2 1, (-3) :/ 4]
 
 frac1'', frac2'' :: Fraccion'
 frac1'' = F2 2
 frac2'' = F2 4
 
 frac1''' :: Fraccion'
-frac1''' = 3 :/ 2
+frac1''' = 18 :/ 2
 
 mainApartadoB :: IO ()
 mainApartadoB = do
@@ -255,6 +319,7 @@ mainApartadoB = do
     print $ cadena7 frac1' ++ " es " ++ comp2 frac1' frac2' ++ " " ++ cadena7 frac2'
     print $ cadena7 frac3'++ " es " ++ comp2 frac3' frac4' ++ " " ++  cadena7 frac4'
     print $ cadena7 frac1'++ " es " ++ comp2 frac1' frac4' ++ " " ++ cadena7 frac4'
+    print $ cadena7 frac1'++ " es " ++ comp2 frac1' frac1''' ++ " " ++ cadena7 frac1'''
 
     putStrLn "\nSuma de una lista de fracciones:"
     print $ "[ " ++ cadena8 lista2' ++ " ] = " ++ cadena8 (suma3 lista2')
@@ -274,6 +339,8 @@ mainApartadoB = do
 
     putStrLn "\nConvertir a cadena una fracción:"
     print $ cadena7 frac1'
+    print $ cadena7 frac1''
+    print $ cadena7 frac1'''
 
     putStrLn "\nConvertir a cadena una lista fracciones:"
     print $ cadena8 lista'

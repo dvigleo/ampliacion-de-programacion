@@ -1,7 +1,8 @@
 module Main where
 
-import MainApartadoB
-import MainApartadoC
+import           MainApartadoB
+import           MainApartadoC
+-- import           MainApartadoE
 
 main :: IO ()
 main = do
@@ -10,3 +11,6 @@ main = do
 
     putStrLn "\n\n ------------- Apartado c) ------------- \n"
     mainApartadoC
+
+    -- putStrLn "\n\n ------------- Apartado e) ------------- \n"
+    -- mainApartadoE

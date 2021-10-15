@@ -28,6 +28,7 @@ library
       Lib
       MainApartadoB
       MainApartadoC
+      MainApartadoE
   other-modules:
       Paths_practica1b
   hs-source-dirs:
