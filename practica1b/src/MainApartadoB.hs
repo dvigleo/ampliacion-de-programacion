@@ -82,23 +82,24 @@ comp2 (F1 a b) (c :/ d)
         - sumaAux = Función que recibe dos fracciones y las suma de acuerdo a la fórmula matemática.
 -}
 sumaAux :: Fraccion' -> Fraccion' -> Fraccion'
-sumaAux (F1 a b) (F1 c d) = simp1 (F1 (a * (y `div` b) + c * (y `div` d)) y)
+sumaAux (F1 a b) (F1 c d) = F1 (a * (y `div` b) + c * (y `div` d)) y
     where y = (b * d) `div` gcd b d
-sumaAux (F1 a b) (F2 c) = simp1 (F1 (a * (y `div` b) + c * y) y)
+sumaAux (F1 a b) (F2 c) =  F1 (a * (y `div` b) + c * y) y
     where y = b `div` gcd b 1
-sumaAux (F2 a) (F1 c d) = simp1 (F1 (a * y + c * (y `div` d)) y)
-    where y = d `div` gcd 1 d
-sumaAux (F2 a) (F2 b) = F2 (a + b)
+sumaAux (F1 a b) (c :/ d) = (a * (y `div` b) + c * (y `div` d)) :/ y
+    where y = (b * d) `div` gcd b d
 
-sumaAux (a :/ b) (c :/ d) = simp1 ((a * (y `div` b) + c * (y `div` d)) :/ y)
+sumaAux (a :/ b) (c :/ d) =  (a * (y `div` b) + c * (y `div` d)) :/ y
     where y = (b * d) `div` gcd b d
-sumaAux (a :/ b) (F1 c d) = simp1 ((a * (y `div` b) + c * (y `div` d)) :/ y)
+sumaAux (a :/ b) (F1 c d) = (a * (y `div` b) + c * (y `div` d)) :/ y
     where y = (b * d) `div` gcd b d
-sumaAux (F1 a b) (c :/ d) = simp1 ((a * (y `div` b) + c * (y `div` d)) :/ y)
-    where y = (b * d) `div` gcd b d
-sumaAux (a :/ b) (F2 c) = simp1 ((a * (y `div` b) + c * y) :/ y)
+sumaAux (a :/ b) (F2 c) = (a * (y `div` b) + c * y) :/ y
     where y = b `div` gcd b 1
-sumaAux (F2 a) (c :/ d) = simp1 ((a * y + c * (y `div` d)) :/ y)
+
+sumaAux (F2 a) (F2 b) = F2 (a + b)
+sumaAux (F2 a) (F1 c d) = F1 (a * y + c * (y `div` d)) y
+    where y = d `div` gcd 1 d
+sumaAux (F2 a) (c :/ d) = (a * y + c * (y `div` d)) :/ y
     where y = d `div` gcd 1 d
 
 suma3 :: [Fraccion'] -> [Fraccion']
