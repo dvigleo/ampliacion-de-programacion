@@ -1,13 +1,28 @@
 module Main where
-    import Func.Definiciones
+import           MainApartadoD
+import           MainApartadoH
+import           MainApartadoI
+-- import           MainApartadoK
+import           MainApartadoL
+-- import           MainApartadoM
+import           MainApartadoN
+import           MainApartadoO
 
-    lista = repetir [3,4,3]
-    ejemplo1 = coger 1 [3,4,3,5]
-    ejemplo2 = coger 2 [3,4,3,5]
-    ejemplo3 = coger 3 [3,4,3,5]
-
-    main = do
-        print ejemplo1
-        print ejemplo2
-        print ejemplo3
-        print lista
+main :: IO ()
+main = do
+    putStrLn "\n\n ------------- Apartado d) ------------- \n"
+    mainApartadoD
+    putStrLn "\n\n ------------- Apartado h) ------------- \n"
+    mainApartadoH
+    putStrLn "\n\n ------------- Apartado i) ------------- \n"
+    mainApartadoI
+    -- putStrLn "\n\n ------------- Apartado k) ------------- \n"
+    -- mainApartadoK
+    putStrLn "\n\n ------------- Apartado l) ------------- \n"
+    mainApartadoL
+    -- putStrLn "\n\n ------------- Apartado m) ------------- \n"
+    -- mainApartadoM
+    putStrLn "\n\n ------------- Apartado n) ------------- \n"
+    mainApartadoN
+    putStrLn "\n\n ------------- Apartado o) ------------- \n"
+    mainApartadoO

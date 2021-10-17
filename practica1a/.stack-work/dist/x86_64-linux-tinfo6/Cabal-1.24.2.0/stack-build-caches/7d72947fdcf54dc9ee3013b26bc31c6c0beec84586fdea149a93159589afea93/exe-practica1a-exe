@@ -1,14 +1,12 @@
-? /home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/app/Func/Definiciones.hs
-: hash: 8880e559a5383ac07e20617eab91df3bc4edee9940e9289091caaa302a46f325
 /home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/ChangeLog.md:
   hash: 81791979b65e16d9168cd9e938438d099d5b0183e86e1fa6f7c24abd6e5e62d3
 /home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/app/Main.hs:
-  hash: 05c7f02fb1a5d2f80bdf4baea72c4be29196dee72a6eca7135f3b660a8d6d060
+  hash: efca29a34154f26891c35708a5a0307deba485ccd1a979c2b063d1b08585f617
 /home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/practica1a.cabal:
-  hash: 0c66c6e2c27dfbe7d105b1e78ca4c73364dc3f9f558cebf4437fdc984c6ad1f5
+  hash: f43875b120128ceb65c709714aa7dd4db45238d28fc39ce2aaebfe176dab9a29
 /home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/README.md:
   hash: 8c3b1c359d95b502722d96e5728e19f38b67c21cc4e93c99b22325bd2d34f32d
 /home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/package.yaml:
-  hash: 63f274c9cb9f40460841648f6b200344abd39b1c54e4bebf0f74ee1551447cf4
+  hash: 8d5e973511aaa67b420e6f0e7edf0445d0138d44a18a5f35085db1ccdb70c80b
 ? /home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/.stack-work/dist/x86_64-linux-tinfo6/Cabal-1.24.2.0/build/autogen/Paths_practica1a.hs
-: hash: 68790f984ebb3e41cb110cabe065c5f4bbe8aa6e125b273f5f6f2a39d906b82a
+: hash: aa017aaf455ca25fdf50eba1a0c5e1286cdf74b59b483ad57f3e33b5fbf330bd

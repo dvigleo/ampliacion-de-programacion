@@ -30,6 +30,7 @@ library
       MainApartadoC
       MainApartadoE
       MainApartadoG
+      MainApartadoI
   other-modules:
       Paths_practica1b
   hs-source-dirs:

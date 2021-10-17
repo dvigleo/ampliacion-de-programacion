@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/.stack-work/install/x86_64-linux-tinfo6/7d72947fdcf54dc9ee3013b26bc31c6c0beec84586fdea149a93159589afea93/8.0.2/bin"
-libdir     = "/home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/.stack-work/install/x86_64-linux-tinfo6/7d72947fdcf54dc9ee3013b26bc31c6c0beec84586fdea149a93159589afea93/8.0.2/lib/x86_64-linux-ghc-8.0.2/practica1a-0.1.0.0-GGC4wW73iuPEuiryH7ytRj"
+libdir     = "/home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/.stack-work/install/x86_64-linux-tinfo6/7d72947fdcf54dc9ee3013b26bc31c6c0beec84586fdea149a93159589afea93/8.0.2/lib/x86_64-linux-ghc-8.0.2/practica1a-0.1.0.0-2NmO6uoRgWnGqLh6Jwansc"
 dynlibdir  = "/home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/.stack-work/install/x86_64-linux-tinfo6/7d72947fdcf54dc9ee3013b26bc31c6c0beec84586fdea149a93159589afea93/8.0.2/lib/x86_64-linux-ghc-8.0.2"
 datadir    = "/home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/.stack-work/install/x86_64-linux-tinfo6/7d72947fdcf54dc9ee3013b26bc31c6c0beec84586fdea149a93159589afea93/8.0.2/share/x86_64-linux-ghc-8.0.2/practica1a-0.1.0.0"
 libexecdir = "/home/danielavignau/Documents/universidad-autonoma-de-madrid/aprog/lab/ampliacion-de-programacion/practica1a/.stack-work/install/x86_64-linux-tinfo6/7d72947fdcf54dc9ee3013b26bc31c6c0beec84586fdea149a93159589afea93/8.0.2/libexec"
