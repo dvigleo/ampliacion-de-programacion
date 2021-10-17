@@ -112,3 +112,9 @@ georgeCantor n = georgeCantor' [1..n]
 
 mainApartadoI :: IO ()
 mainApartadoI = print $ georgeCantor 10
+
+{---------------------------------------------------------------------
+    RESULTADO DEL PROGRAMA
+
+[9 :/ 2,F1 12 1,11 :/ 2,F2 13]
+---------------------------------------------------------------------}

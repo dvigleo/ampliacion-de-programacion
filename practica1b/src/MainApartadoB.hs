@@ -369,3 +369,70 @@ mainApartadoB = do
 
     putStrLn "\nSimplificar al máximo los elementos de una lista de fracciones y eliminar las equivalentes: "
     print $ "[ " ++ cadena8 lista' ++ " ] -> [ " ++ cadena8(simplificar14 lista') ++ " ]"
+
+
+{---------------------------------------------------------------------
+    RESULTADO DEL PROGRAMA
+
+Simplificador de fracciones:
+"540/420 -> 9/7"
+
+Comparación de fracciones:
+   | LT = Less Than
+   | GT = Greater Than
+   | EQ = Equal To
+
+"1/5 es LT 9/7"
+"540/420 es GT 4/20"
+"1/5 es EQ 4/20"
+"1/5 es LT 18/2"
+
+Suma de una lista de fracciones:
+"[ 8, 2, 1, -2, 0/2 ] = 18/2"
+
+Mult. de 2 fracciones:
+"1/5 x 2 = 2/5"
+
+Resta de 2 fracciones:
+"2 - 4 = -2"
+
+Restar y multiplicar varias fracciones, poniendo paréntesis desde la izquierda y derecha:
+"[ 8, 2, 1, -2, 0/2 ]"
+"Restando por la izquierda = 11/20"
+"Restando por la derecha = -59/20"
+"Multiplicando por la izquierda = 9/5"
+"Multiplicando por la derecha = 9/5"
+
+Convertir a cadena una fracción:
+"1/5"
+"2"
+"18/2"
+
+Convertir a cadena una lista fracciones:
+"1/5, 9/7, 540/420, 4/20"
+
+Buscar entre varias fracciones las que son positivas, negativas y nulas:
+"[ 8, 2, 1, -2, 0/2 ]"
+"Positivas: [ 8, 2, 1, 0/2 ]"
+"Negativas: [ -2 ]"
+"Nulas: [ 0/2 ]"
+
+Quitar una fracción de una lista:
+"1/5  |  [1/5, 9/7, 540/420, 4/20 ]"
+"9/7, 540/420"
+
+Ordenar una lista de manera ascendente:
+"[ 1/5, 9/7, 540/420, 4/20 ] -> [ 1/5, 4/20, 9/7, 540/420 ]"
+
+Obtener todas las sumas posibles de 2 listas
+"[ 4, 5 ] + [ 1/2, 8 ]"
+"[ 9/2, 12, 11/2, 13 ]"
+
+Obtener todas las fracciones equivalentes a partir de una inicial:
+"1/5  |  [1/5, 9/7, 540/420, 4/20 ]"
+"[ 1/5, 4/20 ]"
+
+Simplificar al máximo los elementos de una lista de fracciones y eliminar las equivalentes:
+"[ 1/5, 9/7, 540/420, 4/20 ] -> [ 1/5, 9/7 ]"
+
+---------------------------------------------------------------------}
