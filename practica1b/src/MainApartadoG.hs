@@ -16,12 +16,18 @@ module MainApartadoG
 data (Integral a) => Fraccion a =
     F1 a a | F2 a | a :/ a
     deriving (Show)
-
 class SumarListas a where
     (+%+) :: [a] -> [a] -> [a]
-
 instance (Integral a) => SumarListas (Fraccion a) where
     xs +%+ ys = [sumarFracciones x y | x <- xs, y <- ys]
+
+-- data Fraccion =
+--     F1 Integer Integer |
+--     F2 Integer         |
+--     Integer :/ Integer
+--     deriving Show
+-- instance Num [Fraccion] where
+--   (+) xs ys = [sumarFracciones x y | x <- xs, y <- ys]
 
 sumarFracciones (F1 a b) (F1 c d) = F1 (a * (y `div` b) + c * (y `div` d)) y
     where y = (b * d) `div` gcd b d
@@ -44,14 +50,17 @@ sumarFracciones (F2 a) (c :/ d) = (a * y + c * (y `div` d)) :/ y
     where y = d `div` gcd 1 d
 
 lista3, lista4 :: [Fraccion Integer]
+-- lista3, lista4 :: [Fraccion]
 lista3 = [F1 4 1, F2 5]
 lista4 = [1 :/ 2, F2 8]
 
+
 mainApartadoG :: IO ()
 mainApartadoG = print $ lista3 +%+ lista4
+    -- print $ lista3 + lista4
 
 {---------------------------------------------------------------------
     RESULTADO DEL PROGRAMA
 
-[1,2,3,4,5,6,7,8,9,10]
+[9 :/ 2,F1 12 1,11 :/ 2,F2 13]
 ---------------------------------------------------------------------}
