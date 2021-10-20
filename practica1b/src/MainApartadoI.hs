@@ -8,7 +8,11 @@ module MainApartadoI
     cada fracción provenga exactamente de un número entero positivo.
     Estaríamos probando que el conjunto de los números racionales
     (Q) es numerable.
+
+    El siguiente programa se realizó basándose en el siguiente
+    código: https://www.geeksforgeeks.org/n-th-term-of-george-cantor-set-of-rational-numbers/
 ----------------------------------------------------------------------}
+
 data Fraccion =
     F1 Integer Integer |
     F2 Integer         |
@@ -73,17 +77,6 @@ comp2 (F1 a b) (c :/ d)
     | otherwise = "EQ"
     where y = (a * d) - (b * c)
 
-ordenar11 :: [Fraccion] -> [Fraccion]
-ordenar11 [] = []
-ordenar11 (x:xs) =
-    let primeraMitad = ordenar11 [ f1 | f1 <- xs, comp2 f1 x == "LT" || comp2 f1 x == "EQ"]
-        segundaMitad = ordenar11 [ f1 | f1 <- xs, comp2 f1 x == "GT"]
-    in  primeraMitad ++ [x] ++ segundaMitad
-
-
-equivalentes13 :: Fraccion -> [Fraccion] -> [Fraccion]
-equivalentes13 f1 xs = [x | x <- xs, comp2 f1 x == "EQ"]
-
 quitarDups' :: [Fraccion] -> [Fraccion]
 quitarDups' [] = []
 quitarDups' [x] = [x]
@@ -94,27 +87,21 @@ quitarDups' (x:y:xs)
 simplificarAux :: [Fraccion] -> [Fraccion]
 simplificarAux xs = [ simp1 x | x <- xs ]
 
-simplificar14 :: [Fraccion] -> [Fraccion]
-simplificar14 x = quitarDups' (ordenar11 (simplificarAux x))
+diagonalAbajo n k (F1 a b) xs = if a > 1 && k < n then diagonalAbajo n (k + 1) (F1 (a - 1) (b + 1)) (F1 a b : xs) else reverse (quitarDups' (simplificarAux (F1 a b : xs)))
 
-frac1', frac2', frac3', frac4' :: Fraccion
-frac1' = F1 1 5
-frac2' = 9 :/ 7
-frac3' = F1 540 420
-frac4' = F1 4 20
+diagonalArribaAux n k (F1 a b) xs = if k /= n then diagonalAbajo n (k + 1) (F1 (a + 1) b) (F1 a b : xs) else F1 a b : xs
 
-lista' :: [Fraccion]
-lista' = [frac1', frac2', frac3', frac4']
+diagonalArriba n k (F1 a b) xs = if b > 1 && k < n then diagonalArribaAux n (k + 1) (F1 (a + 1) (b - 1)) (F1 a b : xs) else F1 a b : xs
 
-georgeCantor' xs = xs
+georgeCantor' n k (F1 a b) xs = if k == n then F1 a b : xs else diagonalArriba n (k + 1) (F1 a (b + 1)) (F1 a b : xs)
 
-georgeCantor n = georgeCantor' [1..n]
+racionalesNumerables n = georgeCantor' n 1 (F1 1 1) []
 
 mainApartadoI :: IO ()
-mainApartadoI = print $ georgeCantor 10
+mainApartadoI = print $ racionalesNumerables 4
 
 {---------------------------------------------------------------------
     RESULTADO DEL PROGRAMA
 
-[9 :/ 2,F1 12 1,11 :/ 2,F2 13]
+[F1 1 1,F1 1 2,F1 2 1,F1 3 1]
 ---------------------------------------------------------------------}
